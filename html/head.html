@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Head</title>
+<title>Sensor</title>
   <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -13,15 +13,25 @@
 $(document).ready(function(){
 
   now.name = "Head";
-  orientation = { };
+  var direction = -1;
 
-  if ( window.DeviceMotionEvent != undefined ) 
-  {
-    window.ondevicemotion = function(e) 
-    {
-      orientation = {alpha: e.alpha, beta: e.beta, gamma: e.gamma };
-      $('body').text(e.alpha + ", " + e.beta + ", " + e.gamma);
-      now.distributeMessage(orientation);
+  if ( window.DeviceMotionEvent != undefined ){
+
+    window.ondevicemotion = function(e){
+
+      if (typeof e.webkitCompassHeading == 'undefined') {
+        direction = 360 - e.alpha;
+      }
+      else {
+        direction = e.webkitCompassHeading;
+        if (typeof window.orientation !== 'undefined') {
+          direction += window.orientation;
+        }
+      }
+
+      direction = Math.round(direction);
+      $('body').text(direction);
+      now.distributeMessage(direction);
     }
   }
 
