@@ -4,7 +4,7 @@
 <title>Sensor</title>
   <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script src="/nowjs/now.js"></script>
@@ -13,32 +13,36 @@
 $(document).ready(function(){
 
   now.name = "Head";
-  var direction = -1;
+  var norm = undefined;
 
-  if ( window.DeviceMotionEvent != undefined ){
-
-    window.ondevicemotion = function(e){
-
-      if (typeof e.webkitCompassHeading == 'undefined') {
-        direction = 360 - e.alpha;
-      }
-      else {
-        direction = e.webkitCompassHeading;
-        if (typeof window.orientation !== 'undefined') {
-          direction += window.orientation;
-        }
-      }
-
-      direction = Math.round(direction);
-      $('body').text(direction);
-      now.distributeMessage(direction);
+  var deviceDirectionHandler = function(direction){
+    
+    // Calibrate if norm hasn't been set.
+    if (norm == undefined){
+      norm = direction;
     }
+
+    // Compute delta from norm.
+    delta = direction - norm;
+    delta = -1*(Math.round(delta + 540)%360 - 180);
+
+    // Display / broadcast results.
+    now.distributeMessage(delta);
+    $('body').text(delta);
+  }
+
+  // Capture motion events.
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(eventData) {
+      deviceDirectionHandler(eventData.alpha);
+    }, false);
   }
 
 });
 </script>
   <style>
     body{
+      padding: 50px;
       color: white;
       background-color: black;
     }
