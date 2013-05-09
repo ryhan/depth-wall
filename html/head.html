@@ -20,6 +20,7 @@ $(document).ready(function(){
     window.ondevicemotion = function(e) 
     {
       orientation = {alpha: e.alpha, beta: e.beta, gamma: e.gamma };
+      $('body').text(e.alpha + ", " + e.beta + ", " + e.gamma);
       now.distributeMessage(orientation);
     }
   }
@@ -28,27 +29,12 @@ $(document).ready(function(){
 </script>
   <style>
     body{
+      color: white;
       background-color: black;
-    }
-
-    #button{
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 50px;
-      box-sizing: border-box;
-
-      background-color: red;
-
     }
   </style>
 </head>
 <body>
-<strong>Glove</strong>
-<div id="messages">
-</div>
-<div id="button"></div>
 
 </body>
 </html>
