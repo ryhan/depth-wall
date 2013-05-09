@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Orientation Display</title>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script src="/nowjs/now.js"></script>
+<script>
+$(document).ready(function(){
+  now.name = "View";
+  now.receiveMessage = function(name, orientation){
+    console.log(name + ": " + orientation);
+  }
+});
+</script>
+</head>
+<body>
+Hello
+</body>
+</html>
