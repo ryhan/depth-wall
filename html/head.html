@@ -23,10 +23,10 @@ $(document).ready(function(){
     }
 
     // Compute delta from norm.
-    delta = direction - norm;
+    var delta = direction - norm;
     delta = -1*(Math.round(delta + 540)%360 - 180);
 
-    // Display / broadcast results.
+    // Display and broadcast results.
     now.distributeMessage(delta);
     $('body').text(delta);
   }
